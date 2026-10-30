@@ -1,12 +1,12 @@
-# Use lightweight official Node.js image
+# Use lightweight official Node.js Alpine image
 FROM node:20-alpine
 
-# Install curl, bash, wget, and ngrok
-RUN apk add --no-cache curl bash wget && \
-    curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
-    | tee /etc/apk/keys/ngrok.asc >/dev/null && \
-    echo "https://ngrok-agent.s3.amazonaws.com" >> /etc/apk/repositories && \
-    apk add --no-cache ngrok
+# Install curl, bash, and tar for downloading binaries
+RUN apk add --no-cache curl bash tar
+
+# Download and extract ngrok directly into /usr/local/bin
+RUN curl -fsSL https://bin.ngrok.com/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz \
+    | tar -xz -C /usr/local/bin
 
 # Set working directory inside the container
 WORKDIR /app
